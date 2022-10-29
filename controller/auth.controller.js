@@ -1,5 +1,6 @@
 const UserModel = require("../model/user.model");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const createToken = (_id) => jwt.sign({ _id }, process.env.SECRET);
 
@@ -9,7 +10,7 @@ const Login = async (req, res) => {
     const user = await UserModel.findOne({ email });
 
     if (user) {
-      const match = user.isMatch(password);
+      const match = bcrypt.compareSync(password, user.password);
       if (!match)
         return res
           .status(400)
@@ -40,6 +41,9 @@ const Register = (req, res) => {
       alamat,
     } = req.body;
 
+    const salt = bcrypt.genSaltSync(10);
+    const pw = bcrypt.hashSync(password, salt);
+
     UserModel.findOne({ email }, (err, user) => {
       if (err)
         return res
@@ -68,7 +72,7 @@ const Register = (req, res) => {
           nama_belakang,
           email,
           nohp,
-          password,
+          password: pw,
           provinsi,
           kota,
           alamat,

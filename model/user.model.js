@@ -13,18 +13,6 @@ const UserSchema = new Schema({
   google: { id: String, email: String, nama: String },
 });
 
-UserSchema.pre("save", function (next) {
-  if (!this.isModified("password")) return next();
-
-  const salt = bcrypt.genSaltSync(10);
-  this.password = bcrypt.hashSync(this.password, salt);
-  return next();
-});
-
-UserSchema.methods.isMatch = function (password) {
-  return bcrypt.compareSync(password, this.password);
-};
-
 const UserModel = model("User", UserSchema);
 
 module.exports = UserModel;
