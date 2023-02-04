@@ -44,15 +44,15 @@ const Register = (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     const pw = bcrypt.hashSync(password, salt);
 
-    UserModel.findOne({ email }, (err, user) => {
+    UserModel.find({ email, nohp }, (err, user) => {
       if (err)
         return res
           .status(400)
           .json({ status: false, message: "Terjadi Error" });
-      if (user)
+      if (user.length > 0)
         return res
           .status(400)
-          .json({ status: false, message: "User Telah Terdaftar" });
+          .json({ status: false, message: "User Telah Terdaftar", user });
 
       if (
         !nama_depan ||
@@ -66,7 +66,7 @@ const Register = (req, res) => {
           .status(400)
           .json({ status: false, message: "Data Tidak Lengkap" });
 
-      if (!user)
+      if (user.length === 0) {
         var data = new UserModel({
           nama_depan,
           nama_belakang,
@@ -77,12 +77,14 @@ const Register = (req, res) => {
           kota,
           alamat,
         });
-      data.save();
+        data.save();
+      }
 
       res.status(201).json({ status: true, message: "Registrasi Berhasil" });
     });
-  } catch (e) {
-    res.status(500).json({ status: false, message: "Terjadi Kesalahan" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ status: false, message: err });
   }
 };
 
