@@ -28,7 +28,7 @@ const Login = async (req, res) => {
   }
 };
 
-const Register = (req, res) => {
+const Register = async (req, res) => {
   try {
     const {
       nama_depan,
@@ -41,47 +41,42 @@ const Register = (req, res) => {
       alamat,
     } = req.body;
 
+    if (!nama_depan || !nama_belakang || !nohp || !provinsi || !kota || !alamat)
+      return res
+        .status(400)
+        .json({ status: false, message: "Data Tidak Lengkap" });
+
     const salt = bcrypt.genSaltSync(10);
     const pw = bcrypt.hashSync(password, salt);
 
-    UserModel.find({ email, nohp }, (err, user) => {
-      if (err)
-        return res
-          .status(400)
-          .json({ status: false, message: "Terjadi Error" });
-      if (user.length > 0)
-        return res
-          .status(400)
-          .json({ status: false, message: "User Telah Terdaftar", user });
+    const user = await UserModel.find({ email });
+    const noHpReady = await UserModel.find({ nohp });
 
-      if (
-        !nama_depan ||
-        !nama_belakang ||
-        !nohp ||
-        !provinsi ||
-        !kota ||
-        !alamat
-      )
-        return res
-          .status(400)
-          .json({ status: false, message: "Data Tidak Lengkap" });
+    if (noHpReady.length > 0)
+      return res
+        .status(400)
+        .json({ status: false, message: "No HP Telah Terdaftar" });
 
-      if (user.length === 0) {
-        var data = new UserModel({
-          nama_depan,
-          nama_belakang,
-          email,
-          nohp,
-          password: pw,
-          provinsi,
-          kota,
-          alamat,
-        });
-        data.save();
-      }
+    if (user.length === 0) {
+      var data = new UserModel({
+        nama_depan,
+        nama_belakang,
+        email,
+        nohp,
+        password: pw,
+        provinsi,
+        kota,
+        alamat,
+      });
+      data
+        .save()
+        .then((res) => console.log(res))
+        .catch((e) => console.log(e));
+    }
 
-      res.status(201).json({ status: true, message: "Registrasi Berhasil" });
-    });
+    return res
+      .status(201)
+      .json({ status: true, message: "Registrasi Berhasil" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ status: false, message: err });
