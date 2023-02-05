@@ -2,7 +2,6 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
-const { connect } = require("mongoose");
 const Initialize = require("./passport.config");
 const passport = require("passport");
 const session = require("express-session");
@@ -17,7 +16,6 @@ const datasetRouter = require("./routes/dataset.route");
 
 const app = express();
 const config = { google: { clientId: "", secretId: "", callbackURL: "" } };
-connect(process.env.DB);
 Initialize(passport, config);
 
 app.use(logger("dev"));
