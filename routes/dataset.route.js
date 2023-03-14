@@ -7,8 +7,8 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { heartRate } = req.body;
-  const data = new DatasetModel({ heartRate });
+  const { heartRate, gyroX, gyroY, gyroZ } = req.body;
+  const data = new DatasetModel({ heartRate, gyroX, gyroY, gyroZ });
   data.save();
 
   res
