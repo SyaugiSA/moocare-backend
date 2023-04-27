@@ -7,7 +7,6 @@
 var app = require("../app");
 var debug = require("debug")("moocare-backend:server");
 var http = require("http");
-const { connect } = require("mongoose");
 
 /**
  * Get port from environment and store in Express.
@@ -25,11 +24,8 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-async function dbConnect() {
-  await connect(process.env.DB);
-}
 
-dbConnect().then(() => server.listen(port));
+server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
 

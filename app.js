@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -5,7 +6,7 @@ const cors = require("cors");
 const Initialize = require("./passport.config");
 const passport = require("passport");
 const session = require("express-session");
-require("dotenv").config();
+const { connect } = require("mongoose");
 
 const indexRouter = require("./routes/index.route");
 const usersRouter = require("./routes/users.route");
@@ -17,6 +18,9 @@ const datasetRouter = require("./routes/dataset.route");
 const app = express();
 const config = { google: { clientId: "", secretId: "", callbackURL: "" } };
 Initialize(passport, config);
+connect(process.env.DB)
+  .then(() => console.log("db connect"))
+  .catch((err) => console.log(err));
 
 app.use(logger("dev"));
 app.use(express.json());
