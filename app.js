@@ -18,9 +18,7 @@ const datasetRouter = require("./routes/dataset.route");
 const app = express();
 const config = { google: { clientId: "", secretId: "", callbackURL: "" } };
 Initialize(passport, config);
-connect(process.env.DB)
-  .then(() => console.log("db connect"))
-  .catch((err) => console.log(err));
+connect(process.env.DB);
 
 app.use(logger("dev"));
 app.use(express.json());
