@@ -1,9 +1,10 @@
 const { Schema, model } = require("mongoose");
 
 const ClickScheema = new Schema({
-  location: String,
+  username: String,
+  pathName: String,
+  time: Number,
   button: String,
-  duration: Number,
 });
 
 const ClickModel = model("Click", ClickScheema);
