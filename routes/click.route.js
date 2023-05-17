@@ -39,7 +39,7 @@ router.get("/average", async (req, res) => {
 
   setTimeout(() => {
     console.log({ data });
-    res.status(200).json({ data });
+    res.status(200).json({ status: true, message: "Click average", data });
   }, 1000);
 });
 
