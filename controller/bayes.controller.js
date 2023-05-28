@@ -46,19 +46,6 @@ const StandarDeviasi = async () => {
   return { sehat: sehat(), tidakSehat: tidakSehat() };
 };
 
-const AddDataset = () => {
-  let { SheetNames, Sheets } = xlsx.readFile("./storage/dataset.xlsx");
-  const jsonData = xlsx.utils.sheet_to_json(Sheets[SheetNames[0]]);
-
-  return jsonData.map(async (val) => {
-    const data = new DatasetModel({
-      heartRate: val.HeartRate,
-      status: val.status,
-    });
-    await data.save();
-  });
-};
-
 const Nilai = async (input) => {
   const mean = await Mean();
   const sd = await StandarDeviasi();
@@ -77,6 +64,19 @@ const Nilai = async (input) => {
 
   await addData(input, status);
   return { sehat, tidakSehat, status, hr: input };
+};
+
+const AddDataset = () => {
+  let { SheetNames, Sheets } = xlsx.readFile("./storage/dataset.xlsx");
+  const jsonData = xlsx.utils.sheet_to_json(Sheets[SheetNames[0]]);
+
+  return jsonData.map(async (val) => {
+    const data = new DatasetModel({
+      heartRate: val.HeartRate,
+      status: val.status,
+    });
+    await data.save();
+  });
 };
 
 const DataTraining = async () => {

@@ -113,8 +113,8 @@ const Delete = async (req, res) => {
   const { id } = req.params;
 
   try {
-    await DeviceModel.remove({ id });
-    await SensorModel.deleteMany({ id });
+    await DeviceModel.deleteOne({ id });
+    await SensorModel.deleteMany({ sapi: id });
 
     res.status(200).json({ status: true, message: "Data Berhasil Dihapus" });
   } catch (error) {
