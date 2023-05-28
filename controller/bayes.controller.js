@@ -79,7 +79,7 @@ const AddDataset = () => {
   });
 };
 
-const DataTraining = async () => {
+const DataTesting = async () => {
   const { SheetNames, Sheets } = xlsx.readFile("./storage/dataset.xlsx");
   const jsonData = xlsx.utils.sheet_to_json(Sheets[SheetNames[1]]);
   // console.log(jsonData);
