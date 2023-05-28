@@ -1,5 +1,6 @@
 const DeviceModel = require("./../model/device.model");
 const SensorModel = require("./../model/sensor.model");
+const { Nilai } = require("./bayes.controller");
 
 const GetAll = async (req, res) => {
   try {
@@ -21,10 +22,16 @@ const GetOne = async (req, res) => {
     const { id } = req.params;
     const device = await DeviceModel.findOne({ user: user._id, id });
     const sensor = await SensorModel.find({ sapi: id });
+    const data = {
+      nama: device.nama,
+      user: device.user,
+      heartRate: await Nilai(device.heartRate),
+      id: device.id,
+    };
 
     res
       .status(200)
-      .json({ status: true, message: "Device Anda", device, sensor });
+      .json({ status: true, message: "Device Anda", device: data, sensor });
   } catch (e) {
     console.log(e);
     res

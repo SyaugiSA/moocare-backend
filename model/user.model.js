@@ -10,7 +10,6 @@ const UserSchema = new Schema({
   provinsi: { type: Number, required: true },
   kota: { type: Number, required: true },
   alamat: { type: String, required: true },
-  google: { id: String, email: String, nama: String },
 });
 
 const UserModel = model("User", UserSchema);
