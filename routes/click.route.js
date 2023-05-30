@@ -11,6 +11,8 @@ router.post("/", async (req, res) => {
     username,
   });
   data.save();
+  console.log(data);
+  res.status(200).json({ message: "click saved", data });
 });
 
 router.get("/", async (req, res) => {
