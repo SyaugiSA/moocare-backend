@@ -7,17 +7,22 @@ const Get = async (req, res) => {
 };
 
 const Post = async (req, res) => {
-  const { button, pathName, time, username } = req.body;
+  try {
+    const { button, pathName, time, username } = req.body;
 
-  const data = new ClickModel({
-    button,
-    pathName,
-    time,
-    username,
-  });
-  await data.save();
-  console.log(data);
-  res.status(200).json({ message: "click saved", data });
+    const data = new ClickModel({
+      button,
+      pathName,
+      time,
+      username,
+    });
+    await data.save();
+    console.log(data);
+    res.status(200).json({ message: "click saved", data });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "click cannot saved", err });
+  }
 };
 
 const Average = async (req, res) => {
