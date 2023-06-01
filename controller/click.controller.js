@@ -15,7 +15,7 @@ const Post = async (req, res) => {
     time,
     username,
   });
-  data.save();
+  await data.save();
   console.log(data);
   res.status(200).json({ message: "click saved", data });
 };
