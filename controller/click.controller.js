@@ -10,7 +10,7 @@ const Post = async (req, res) => {
   try {
     const { button, pathName, time, username } = req.body;
 
-    const data = new ClickModel({
+    const data = await new ClickModel({
       button,
       pathName,
       time,
