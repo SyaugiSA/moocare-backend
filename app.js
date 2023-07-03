@@ -7,6 +7,7 @@ const Initialize = require("./passport.config");
 const passport = require("passport");
 const session = require("express-session");
 const { connect } = require("mongoose");
+const path = require("path");
 
 const indexRouter = require("./routes/index.route");
 const usersRouter = require("./routes/users.route");
@@ -35,6 +36,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static(path.join(__dirname, "/storage")));
 
 app.use("/", indexRouter);
 app.use("/user", usersRouter);

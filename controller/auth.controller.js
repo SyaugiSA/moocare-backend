@@ -41,10 +41,19 @@ const Register = async (req, res) => {
       alamat,
     } = req.body;
 
-    if (!nama_depan || !nama_belakang || !nohp || !provinsi || !kota || !alamat)
+    if (
+      !nama_depan ||
+      !nama_belakang ||
+      !nohp ||
+      !provinsi ||
+      !kota ||
+      !alamat
+    ) {
+      console.log({ nama_depan, nama_belakang, nohp, provinsi, kota, alamat });
       return res
         .status(400)
         .json({ status: false, message: "Data Tidak Lengkap" });
+    }
 
     const salt = bcrypt.genSaltSync(10);
     const pw = bcrypt.hashSync(password, salt);

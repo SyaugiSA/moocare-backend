@@ -1,4 +1,6 @@
 const ClickModel = require("./../model/click.model");
+const path = require("path");
+const xlsx = require("xlsx");
 
 const Get = async (req, res) => {
   const data = await ClickModel.find();
@@ -49,4 +51,34 @@ const Average = async (req, res) => {
   }, 1000);
 };
 
-module.exports = { Get, Post, Average };
+const Download = async (req, res) => {
+  const model = await ClickModel.find().select(["-_id", "-__v"]);
+  const data = [];
+  model.map((val) =>
+    data.push({
+      username: val.username,
+      button: val.button,
+      time: val.time,
+      pathName: val.pathName,
+    })
+  );
+
+  const workSheet = xlsx.utils.json_to_sheet(data);
+  const workBook = xlsx.utils.book_new();
+  xlsx.utils.book_append_sheet(workBook, workSheet);
+  xlsx.writeFile(
+    workBook,
+    path.join(__dirname, "../public/storage/click.xlsx")
+  );
+  console.log("file created");
+
+  res.setHeader("Content-disposition", "attachment;filename=click.xlsx");
+  res.setHeader("Content-type", "application/vnd.ms-excel");
+
+  res.download(path.join(__dirname, "../public/storage/click.xlsx"), (err) => {
+    if (err) console.log(err);
+    else console.log("file downloaded");
+  });
+};
+
+module.exports = { Get, Post, Average, Download };
