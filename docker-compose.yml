@@ -1,9 +1,9 @@
 services:
-  moocare-server:
+  web:
     build: .
     command: npm run start
     ports:
-      - "8000:8000"
+      - "8001:8000"
     environment:
       - DB=mongodb+srv://admin:admin@moocare.eq6n93z.mongodb.net/moocare
       - PORT=8000
